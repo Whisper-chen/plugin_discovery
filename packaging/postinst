@@ -1,0 +1,15 @@
+#!/bin/sh
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+set -e
+if [ "$1" = configure ]; then
+  ldconfig
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload || true
+    systemctl enable plugin-discovery-platform-detect.service || true
+    # Runs platform-detect now if it has not run on this machine yet (the unit has a
+    # ConditionPathExists on its stamp file, so an upgrade does not run it again).
+    systemctl start plugin-discovery-platform-detect.service || true
+  fi
+fi
+exit 0
