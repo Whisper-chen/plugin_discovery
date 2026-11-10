@@ -86,6 +86,34 @@ install(FILES
   cmake/plugin_discoveryMacros.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/plugin_discovery)
 
+# Filled-in configuration examples, to copy from.
+install(FILES
+  templates/platform-config/examples/QCS8300-Ubuntu-camera.config.yaml
+  templates/customer-config/examples/50-camera-v4l2.config.yaml
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
+install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DOCDIR} RENAME copyright)
+
+# Debian package: build on the target (or natively for it) and install with dpkg/apt:
+#   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && cmake --build build -j
+#   cpack --config build/CPackConfig.cmake -G DEB      # writes build/plugin-discovery_<version>_<arch>.deb
+set(CPACK_GENERATOR DEB)
+set(CPACK_PACKAGE_NAME plugin-discovery)
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_CONTACT "Qualcomm Technologies, Inc. <noreply@qualcomm.com>")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cross-platform backend mechanism for the Robotics SDK")
+set(CPACK_PACKAGING_INSTALL_PREFIX /usr)
+set(CPACK_DEBIAN_PACKAGE_SECTION libs)
+set(CPACK_INSTALL_DEFAULT_DIRECTORY_PERMISSIONS
+  OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "systemd")
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+  ${CMAKE_CURRENT_SOURCE_DIR}/packaging/postinst
+  ${CMAKE_CURRENT_SOURCE_DIR}/packaging/prerm
+  ${CMAKE_CURRENT_SOURCE_DIR}/packaging/postrm)
+include(CPack)
+
 if(PLUGIN_LOADER_BUILD_TESTS OR PLUGIN_LOADER_COMPARE_UPSTREAM)
   find_package(Threads REQUIRED)
   add_subdirectory(test)

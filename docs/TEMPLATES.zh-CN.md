@@ -9,6 +9,8 @@
 | 平台配置 | 平台的 tech owner:列出 Qualcomm 在该平台完全支持的 backend | 候选文件在 `<prefix>/share/plugin_discovery/platforms.d/`;`platform-detect` 把匹配的那个链接到 `/etc/plugin_discovery/platform.d/` | [`templates/platform-config/`](../templates/platform-config) |
 | 客户配置 | 客户:加自己的 backend,或去掉某个 Qualcomm backend | `/etc/plugin_discovery/config.d/` | [`templates/customer-config/`](../templates/customer-config) |
 
+填好的示例(复制后按需修改):[`templates/platform-config/examples/QCS8300-Ubuntu-camera.config.yaml`](../templates/platform-config/examples/QCS8300-Ubuntu-camera.config.yaml)(QCS8300 + Ubuntu:`qmmf`、`qcarcam`)和 [`templates/customer-config/examples/50-camera-v4l2.config.yaml`](../templates/customer-config/examples/50-camera-v4l2.config.yaml)(客户文件把 `v4l2` 放到最前面,合并后是 `v4l2, qmmf, qcarcam`,默认 backend 为 `v4l2`)。
+
 ## 文件名
 
 库读取两个目录。平台层的文件先应用,客户层的文件后应用,与文件名无关;同一层内按文件名升序应用,最后一个说了算。

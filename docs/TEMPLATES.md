@@ -9,6 +9,8 @@ Two ready-to-copy templates for the people who own a platform or a customer depl
 | Platform configuration | the tech owner of a platform: lists the backends Qualcomm fully supports there | candidates in `<prefix>/share/plugin_discovery/platforms.d/`; `platform-detect` links the matching one into `/etc/plugin_discovery/platform.d/` | [`templates/platform-config/`](../templates/platform-config) |
 | Customer configuration | a customer: adds its own backends, or takes a Qualcomm one out | `/etc/plugin_discovery/config.d/` | [`templates/customer-config/`](../templates/customer-config) |
 
+Filled-in examples (copy and adjust): [`templates/platform-config/examples/QCS8300-Ubuntu-camera.config.yaml`](../templates/platform-config/examples/QCS8300-Ubuntu-camera.config.yaml) (QCS8300 on Ubuntu: `qmmf`, `qcarcam`) and [`templates/customer-config/examples/50-camera-v4l2.config.yaml`](../templates/customer-config/examples/50-camera-v4l2.config.yaml) (a customer file that puts `v4l2` in front, so the merged list is `v4l2, qmmf, qcarcam` and `v4l2` is the default).
+
 ## File names
 
 The library reads two directories. Platform-tier files apply first and customer-tier files after, whatever their names; within a tier files apply in ascending file-name order, and the last one wins.
